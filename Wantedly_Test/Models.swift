@@ -12,23 +12,6 @@ struct jobData: Codable, Identifiable{
 //    struct Image_url: Codable{
 //        var url:String
 //    }
-
-//    struct Company: Codable {
-//        var id: Int
-//        var name: String
-//        var founder: String
-//        var founded_on: String
-//        var payroll_number: Int
-//        var address_prefix: String
-//        var address_suffix: String
-//        var latitude: Float
-//        var longitude: Float
-//        var url: String
-//        var font_color_code: String
-//        var avatar:[Image_url]
-//        var staffings_count:Int
-//    }
-//
     var id: Int
     var title: String
     var published_at: String
@@ -41,7 +24,24 @@ struct jobData: Codable, Identifiable{
     var looking_for: String
     
     var image:[String:String?]
-//    var by_company:[Company]
+    var company: Company
+    
+    var staffings_count:Int
+}
+
+struct Company: Codable {
+    var id: Int
+    var name: String
+    var founder: String
+    var founded_on: String
+    var payroll_number: Int
+    var address_prefix: String
+    var address_suffix: String
+    var latitude: Float
+    var longitude: Float
+    var url: String
+    var font_color_code: String
+    var avatar:[String:String]
 }
 
 struct Results: Codable{

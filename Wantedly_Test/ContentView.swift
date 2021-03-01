@@ -13,6 +13,7 @@ struct ContentView: View {
     var body: some View {
         ForEach(publisher.openJobs){each in
             Text(each.title).padding()
+            
         }
     }
 }
