@@ -8,9 +8,12 @@
 import SwiftUI
 
 struct ContentView: View {
+    @ObservedObject var publisher = dataPublisher(url: "https://www.wantedly.com/api/v1/projects?q=swift&page=1")
+    
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        ForEach(publisher.openJobs){each in
+            Text(each.title).padding()
+        }
     }
 }
 
