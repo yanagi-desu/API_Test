@@ -15,67 +15,67 @@ struct MainView: View {
         NavigationView{
             ScrollView{
                 ForEach(publisher.openJobs){each in
-                    BlockView(title: each.title,
-                              img: publisher.ImageCache[each.id]!,
-                              companySize: each.company.payroll_number,
-                              companyLocation: each.location,
-                              foundDate: each.company.founded_on
+                    let imgCache = publisher.ImageCache[each.id]!
+                    BlockView(job: each,
+                              img: imgCache["i_255_70"]!,
+                              imageCache: publisher.ImageCache,
+                              companyAvatar: publisher.CompanyAvatar
                     )
                     .shadow(radius: 3.0)
-                    .padding(20)
+                    .padding(.all,16)
 //                    Text(each.title).padding(.leading,5)
 //                    Image(uiImage: publisher.ImageCache[each.id]!)
                 }
             } .navigationBarTitle("Wantedly")
         }
-
         .navigationBarColor(backgroundColor: toolbarColor!, tintColor:.white, scrollEdgeColor: toolbarColor!)
     }
 }
 
 
 struct BlockView: View{
-    let title:String
+    let job: jobData
     let img: UIImage
-    let companySize: Int
-    let companyLocation: String
-    let foundDate: String
+    let imageCache:[Int:[String:UIImage]]
+    let companyAvatar:[Int:[String:UIImage]]
+    
     var body: some View{
-        ZStack{
-            RoundedRectangle(cornerRadius: 20,style: .continuous)
-                .fill(Color.white)
-            HStack{
-                Group{
+        NavigationLink(
+            destination: CardDetailView(job:job, company: job.company, imageCache: imageCache,companyAvatar:companyAvatar)
+        ){
+            ZStack{
+                RoundedRectangle(cornerRadius: 20,style: .continuous)
+                    .fill(Color.white)
+                HStack{
+                    //First hald of the block, containing Title and intro image
                     VStack(alignment:.leading){
-                        Text(title).font(.body)
+                        Text(job.title).font(.body)
                         Image(uiImage: img).cornerRadius(5.0)
                     }
-                }
-                Spacer().frame(width:15)
-                VStack(alignment: .leading){
-                    HStack{
-                        Image(systemName: "person.3").frame(width: 3, height: 3).padding(.trailing,6)
-                        Text(String(companySize))
-                            .font(.footnote)
-                            .truncationMode(.tail)
-                    }.padding(.bottom,3)
-                    HStack{
-                        Image(systemName: "building").frame(width: 6, height: 6).padding(.trailing,3)
-                        Text(companyLocation)
-                            .frame(width:70)
-                            .font(.footnote)
-                            .truncationMode(.tail)
-                    }.padding(.bottom,3)
-                    HStack{
-                        Image(systemName: "location").frame(width: 6, height: 6).padding(.trailing,3)
-                        Text(foundDate)
-                            .font(.footnote)
-                            .truncationMode(.tail)
+                    //Second half of the block, containing company info
+                    VStack(alignment: .leading){
+                        HStack{
+                            Image(systemName: "person.3")
+                            Text(String(job.staffings_count))
+                                .font(.footnote)
+                                .truncationMode(.tail)
+                        }.padding(.bottom,3)
+                        HStack{
+                            Image(systemName: "location")
+                            Text(job.company.address_prefix)
+                                .frame(width:70)
+                                .font(.footnote)
+                                .truncationMode(.tail)
+                        }.padding(.bottom,3)
+                        HStack{
+                            Image(systemName: "building")
+                            Text(job.company.founded_on)
+                                .font(.footnote)
+                                .truncationMode(.tail)
+                        }
                     }
-                }
-                
-            }.padding(5)
-            .frame(width: 410, height: 140,alignment: .leading)
+                }.padding(10)
+            }
         }
     }
 }

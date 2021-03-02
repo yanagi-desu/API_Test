@@ -17,8 +17,9 @@ class dataPublisher: ObservableObject {
 //    let urlString = "https://www.wantedly.com/api/v1/projects?q=swift&page=1"
     var urlString:String
     @Published var openJobs = [jobData]()
-    @Published var ImageCache = [Int:UIImage]()
-    @Published var CompanyAvatar = [Int:UIImage]()
+    @Published var ImageCache = [Int:[String:UIImage]]()
+    @Published var CompanyAvatar = [Int:[String:UIImage]]()
+    
     
     init(url: String) {
         urlString = url
@@ -37,17 +38,41 @@ class dataPublisher: ObservableObject {
     
     func getImages(){
         for each in openJobs {
-            if  let url = URL(string: (each.image["i_255_70"] ?? "None")!){
-                var image: UIImage? = nil
-                do {
-                    let data = try Data(contentsOf: url, options: [])
-                    image = UIImage(data: data)
-                    ImageCache[each.id] = image
-                }
-                catch {
-                    print(error.localizedDescription)
+            //loop to get all avatars
+            var companyImageDir = [String:UIImage]()
+            for eachAvatarUrl in each.company.avatar{
+                if  let url = URL(string: (eachAvatarUrl.value)){
+                    var image: UIImage? = nil
+                    do {
+                        let data = try Data(contentsOf: url, options: [])
+                        image = UIImage(data: data)
+                        companyImageDir[eachAvatarUrl.key] = image
+                    }
+                    catch {
+                        print(error.localizedDescription)
+                    }
                 }
             }
+            CompanyAvatar[each.company.id] = companyImageDir
+            //loop to get all the job images
+            var imageDir = [String:UIImage]()
+            for eachImageUrl in each.image{
+                if let temp_url = eachImageUrl.value{
+                    if let url = URL(string: temp_url){
+                        var image: UIImage? = nil
+                        do {
+                            let data = try Data(contentsOf: url, options: [])
+                            image = UIImage(data: data)
+                            imageDir[eachImageUrl.key] = image
+                        }
+                        catch {
+                            print(error.localizedDescription)
+                            continue
+                        }
+                    }
+                }
+            }
+            ImageCache[each.id] = imageDir
         }
     }
     
@@ -69,3 +94,15 @@ class dataPublisher: ObservableObject {
 
 
 
+
+//            if  let url = URL(string: (each.image["i_255_70"] ?? "None")!){
+//                var image: UIImage? = nil
+//                do {
+//                    let data = try Data(contentsOf: url, options: [])
+//                    image = UIImage(data: data)
+//                    ImageCache[each.id] = image
+//                }
+//                catch {
+//                    print(error.localizedDescription)
+//                }
+//            }
