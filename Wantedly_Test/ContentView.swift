@@ -8,15 +8,28 @@
 import SwiftUI
 
 struct ContentView: View {
-    @ObservedObject var publisher = dataPublisher(url: "https://www.wantedly.com/api/v1/projects?q=swift&page=1")
     
     var body: some View {
-        ForEach(publisher.openJobs){each in
-            Text(each.title).padding()
+        TabView{
+            MainView().tabItem{
+                Image(systemName: "doc.richtext.fill")
+                Text("Main")
+            }
+            DummyView1().tabItem{
+                Image(systemName: "heart.text.square.fill")
+                Text("House")
+            }
             
+            DummyView2().tabItem{
+                Image(systemName: "person.crop.circle")
+                Text("Account")
+            }
         }
     }
 }
+
+
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
