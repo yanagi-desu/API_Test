@@ -17,12 +17,12 @@ struct ContentView: View {
             }
             DummyView1().tabItem{
                 Image(systemName: "heart.text.square.fill")
-                Text("House")
+                Text("Dummy1")
             }
             
             DummyView2().tabItem{
                 Image(systemName: "person.crop.circle")
-                Text("Account")
+                Text("Dummy2")
             }
         }
     }
