@@ -69,6 +69,7 @@
 		E91B2BD525E9D4890007CFC0 /* Wantedly_Test */ = {
 			isa = PBXGroup;
 			children = (
+				E9F981A625EF88D100577729 /* Resources */,
 				E9F9818E25EE527E00577729 /* ViewModifiers */,
 				E9F9818D25EE527E00577729 /* ContentView.swift */,
 				E9F9819325EE527E00577729 /* DataHub.swift */,
@@ -101,6 +102,13 @@
 				E9805F4425EE667800A6CEC6 /* NavigationBarModifier.swift */,
 			);
 			path = ViewModifiers;
+			sourceTree = "<group>";
+		};
+		E9F981A625EF88D100577729 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

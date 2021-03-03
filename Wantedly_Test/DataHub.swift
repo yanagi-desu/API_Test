@@ -37,16 +37,18 @@ class dataPublisher: ObservableObject {
     }
     
     func getImages(){
+        let toGetAvatars = ["s_30","s_60","s_100"]
+        let toGetImages = ["i_320_131","i_320_131_x2","i_105_130","i_255_70"]
         for each in openJobs {
             //loop to get all avatars
             var companyImageDir = [String:UIImage]()
-            for eachAvatarUrl in each.company.avatar{
-                if  let url = URL(string: (eachAvatarUrl.value)){
+            for eachKey in toGetAvatars{
+                if  let url = URL(string: (each.company.avatar[eachKey]!)){
                     var image: UIImage? = nil
                     do {
                         let data = try Data(contentsOf: url, options: [])
                         image = UIImage(data: data)
-                        companyImageDir[eachAvatarUrl.key] = image
+                        companyImageDir[eachKey] = image
                     }
                     catch {
                         print(error.localizedDescription)
@@ -54,22 +56,21 @@ class dataPublisher: ObservableObject {
                 }
             }
             CompanyAvatar[each.company.id] = companyImageDir
+            
             //loop to get all the job images
             var imageDir = [String:UIImage]()
-            for eachImageUrl in each.image{
-                if let temp_url = eachImageUrl.value{
-                    if let url = URL(string: temp_url){
-                        var image: UIImage? = nil
-                        do {
-                            let data = try Data(contentsOf: url, options: [])
-                            image = UIImage(data: data)
-                            imageDir[eachImageUrl.key] = image
-                        }
-                        catch {
-                            print(error.localizedDescription)
-                            continue
-                        }
-                    }
+            for eachKey in toGetImages{
+                if let url = URL(string: each.image[eachKey]!!){
+                     var image: UIImage? = nil
+                     do {
+                         let data = try Data(contentsOf: url, options: [])
+                         image = UIImage(data: data)
+                         imageDir[eachKey] = image
+                     }
+                     catch {
+                         print(error.localizedDescription)
+                         continue
+                     }
                 }
             }
             ImageCache[each.id] = imageDir
